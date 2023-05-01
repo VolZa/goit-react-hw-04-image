@@ -13,10 +13,10 @@ export class ImageGalleryItem extends Component {
   toggleModal = () => {
     this.setState(({isModal}) => ({ isModal: !isModal }));
   }
-
+  //largeImageURL,
    render () {
-      const { largeImageURL, webformatURL, tags } = this.props.image;
-      const { isModal } = this.state;
+      const { webformatURL, tags } = this.props.image;
+      // const { isModal } = this.state;
  
       return (
          <> 
