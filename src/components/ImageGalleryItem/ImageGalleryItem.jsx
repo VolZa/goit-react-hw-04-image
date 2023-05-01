@@ -5,36 +5,28 @@ import { Modal } from 'components/Modal/Modal';
 
 
 export class ImageGalleryItem extends Component {
-// ({images, togleModal})
   state = {
-   image: null,//false
    isModal: false,
   }
 
   toggleModal = () => {
     this.setState(({isModal}) => ({ isModal: !isModal }));
-    console.log("toggleModal отримав isModal змінив на : "+this.state.isModal )
-  }
-  setImg = () => {
-   // console.log("В ImageGaleryItem спрацював setImg")
-   // console.log(this.props.img.largeImageURL)
-   this.setState({image: this.props.img.largeImageURL})
   }
 
    render () {
       const { largeImageURL, webformatURL, tags } = this.props.image;
       // const { item } = this.props;
       const { isModal } = this.state;
-      // console.log("ImageGalleryItem render :")
-      // console.log(this.props)
+      console.log("Render ImageGalleryItem, largeImageURL =  "+largeImageURL)
+
       return (
          <> 
-            <GaleryItem onClick={() => this.toggleModal(largeImageURL)}>
+            <GaleryItem onClick={this.toggleModal}>
                <GaleryImage src={webformatURL} alt={tags} width="320" />
             </GaleryItem>
             {isModal && (
                <Modal onClose={this.toggleModal}>
-                  <GaleryImage src={largeImageURL} alt={tags} />
+                  <img src={largeImageURL} alt={tags} />
                </Modal>
             )}
   
