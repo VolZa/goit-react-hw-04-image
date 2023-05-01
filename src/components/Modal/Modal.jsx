@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { createPortal } from 'react-dom';
 import { Backdrop, ModalImg } from './Modal.styled';
 
-const modalRoot = document.querySelector('#modal-root');
+const modalRoot = document.querySelector('#root-modal');
 
 export class Modal extends Component {
   componentDidMount() {
