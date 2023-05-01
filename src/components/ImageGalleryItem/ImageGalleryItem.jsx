@@ -23,11 +23,11 @@ export class ImageGalleryItem extends Component {
             <GaleryItem onClick={this.toggleModal}>
                <GaleryImage src={webformatURL} alt={tags} width="320" />
             </GaleryItem>
-            {isModal && (
+            {/* {isModal && (
                <Modal onClose={this.toggleModal}>
                   <img src={largeImageURL} alt={tags} />
                </Modal>
-            )}
+            )} */}
   
          </>  
       )
