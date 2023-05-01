@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import { GaleryImage, GaleryItem } from './ImageGalleryItem.styled';
 import { Component } from 'react';
-// import { Modal } from 'components/Modal/Modal';
-
-
+import { Modal } from 'components/Modal/Modal';
 
 export class ImageGalleryItem extends Component {
   state = {
@@ -13,27 +11,27 @@ export class ImageGalleryItem extends Component {
   toggleModal = () => {
     this.setState(({isModal}) => ({ isModal: !isModal }));
   }
-  //largeImageURL,
+
    render () {
-      const { webformatURL, tags } = this.props.image;
-      // const { isModal } = this.state;
+      const {largeImageURL, webformatURL, tags } = this.props.image;
+      const { isModal } = this.state;
  
       return (
          <> 
             <GaleryItem onClick={this.toggleModal}>
                <GaleryImage src={webformatURL} alt={tags} width="320" />
             </GaleryItem>
-            {/* {isModal && (
+            {isModal && (
                <Modal onClose={this.toggleModal}>
-                  <img src={largeImageURL} alt={tags} />
+                  <GaleryImage src={largeImageURL} alt={tags} />
                </Modal>
-            )} */}
+            )}
   
          </>  
       )
    }
-
 }
+
 
 ImageGalleryItem.propTypes = {
    image: PropTypes.shape({
@@ -51,3 +49,23 @@ ImageGalleryItem.propTypes = {
 //       />
 //    </GaleryItem>
 // ))}
+
+
+
+//Ігор Кальчин
+// const ImageGalleryItem = ({ images,  onClick }) => {
+//    const { webformatURL, largeImageURL, tags } = images;
+//    return ( 
+//       <GaleryItem>
+//          <GaleryImage src={webformatURL} alt={tags} onClick={() => onClick(largeImageURL)} />
+//       </GaleryItem>
+//    )
+// };
+
+// ImageGalleryItem.propTypes = {
+//    hit: PropTypes.shape({
+//        webformatURL: PropTypes.string,
+//        largeImageURL: PropTypes.string,
+//    }),
+//    onClick: PropTypes.func.isRequired,
+// };
