@@ -15,10 +15,8 @@ export class ImageGalleryItem extends Component {
 
    render () {
       const { largeImageURL, webformatURL, tags } = this.props.image;
-      // const { item } = this.props;
       const { isModal } = this.state;
-      console.log("Render ImageGalleryItem, largeImageURL =  "+largeImageURL)
-
+ 
       return (
          <> 
             <GaleryItem onClick={this.toggleModal}>

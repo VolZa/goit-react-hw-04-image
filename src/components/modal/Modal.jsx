@@ -27,11 +27,12 @@ export class Modal extends Component {
 
   render() {
     const { children } = this.props;
-    console.log("render modalky..........."+this);
+    console.log("render modalky");
+    console.log(this.props)
     console.log(children);  
     return createPortal(
       <Backdrop onClick={this.handleBackdropClick}>
-        <ModalImg>{children}</ModalImg>
+        <ModalImg>{children.props}</ModalImg>
       </Backdrop>,
       modalRoot
     );
