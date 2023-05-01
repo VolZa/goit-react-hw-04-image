@@ -2,15 +2,18 @@ import PropTypes from 'prop-types';
 import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem"
 import { Galery } from './ImageGallery.styled';
 
-export const ImageGallery = ({images, togleModal}) => {
+export const ImageGallery = ({items}) => {
    return (
       <Galery>
-         <ImageGalleryItem images={images} togleModal = {togleModal}/>         
+         {items.map(image => (
+            <li key={image.id}>
+              <ImageGalleryItem image={image}/> 
+            </li>
+         ))}
       </Galery>
    )
-}
+};
 
 ImageGallery.propTypes = {
-   images: PropTypes.arrayOf(PropTypes.object).isRequired, 
-   togleModal: PropTypes.func.isRequired 
+   items: PropTypes.arrayOf(PropTypes.object).isRequired, 
  };
