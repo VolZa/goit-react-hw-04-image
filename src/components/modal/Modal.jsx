@@ -38,3 +38,4 @@ export class Modal extends Component {
     );
   }
 }
+//Модалка є?
