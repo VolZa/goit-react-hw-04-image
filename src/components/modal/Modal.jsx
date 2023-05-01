@@ -3,8 +3,8 @@ import { createPortal } from 'react-dom';
 import { Backdrop, ModalImg } from './Modal.styled';
 
 const modalRoot = document.querySelector('#modal-root');
-
-export class Modal extends Component {
+//default
+export  class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
   }

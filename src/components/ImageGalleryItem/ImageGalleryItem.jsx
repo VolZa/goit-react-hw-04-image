@@ -4,6 +4,7 @@ import { Component } from 'react';
 import { Modal } from 'components/Modal/Modal';
 
 
+
 export class ImageGalleryItem extends Component {
   state = {
    isModal: false,
