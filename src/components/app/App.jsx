@@ -14,29 +14,34 @@ export class App extends Component  {
     search: '',
     arrImages: [],
     page: 1,
+    per_page: 12,
+    totalPages: 0,
     isLoading: false, // чи відбувається завантаження
     error: null,
   }
+  
 
   componentDidUpdate(_, PrevState) {
-    const { search, page } = this.state;
+    const { search, page, per_page } = this.state;
     if (PrevState.search!== search || PrevState.page!== page) {
-      this.fetchImages(search, page);}
+      this.fetchGalary(search, page, per_page);}
   };
 
-  fetchImages = async (search, page) => {  
-    try {
+  
+//=========================================================
+  fetchGalary = async (search, page, per_page) => {  
+    try { 
       this.setState({ isLoading: true });
       //галерея завантаження
-      const images = await API.fetchImages(search, page);
+      const images = await API.fetchImages(search, page, per_page);
       this.setState(prevState => ({ arrImages: [...prevState.arrImages, ...images]}))
+      this.setState({ isLoading: false });//індикатор завантаження
     } 
     catch (error) { console.log(error); 
-    } 
-    finally {
       this.setState({ isLoading: false });//індикатор завантаження
-    }
+    } 
   };
+  //================================================
 
   searcWord = ({photoSearch}) => {
     if (photoSearch.trim()) { 
@@ -44,6 +49,7 @@ export class App extends Component  {
         arrImages: [],
         search: photoSearch,
         page: 1,
+        totalPages: 0,
         isLoading: false, // чи відбувається завантаження
       })
     }
@@ -58,6 +64,8 @@ export class App extends Component  {
 
   render() {  
     const { arrImages, page,  isLoading, error } = this.state; //total, isEmpty
+    // const buttonVisible = isHits && page < totalPages && ! loading;
+
     return (
       <Layout>
         <SearchBar onSubmit={this.searcWord}>
@@ -85,22 +93,3 @@ export class App extends Component  {
   };
 }
 
-
-
-        // {/* <ImageGallery togleModal={this.openModal} images={images} />
-        // {isLoading && <Loader/>} Відображається лоадер */}
-        // {/* {isEmpty && (
-        //   <h2 style={{ textAlign: 'center' }}>
-        //     На жаль таких зображень ще нема...
-        //   </h2>
-        // )}  
-        //  {total / 12 > page && <Button clickLoad={this.clickLoadMore} />} */}
-
-// style={{
-//   height: '100vh',
-//   display: 'flex',
-//   justifyContent: 'center',
-//   alignItems: 'center',
-//   fontSize: 40,
-//   color: '#010101'
-// }}
