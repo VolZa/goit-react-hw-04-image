@@ -14,11 +14,8 @@ export class App extends Component  {
     search: '',
     arrImages: [],
     page: 1,
-    //total: 1,
     isLoading: false, // чи відбувається завантаження
     error: null,
-    //isShowModal: false,
-    //isEmpty: false, // чи є результати пошуку порожніми
   }
 
   componentDidUpdate(_, PrevState) {
@@ -30,6 +27,7 @@ export class App extends Component  {
   fetchImages = async (search, page) => {  
     try {
       this.setState({ isLoading: true });
+      //галерея завантаження
       const images = await API.fetchImages(search, page);
       this.setState(prevState => ({ arrImages: [...prevState.arrImages, ...images]}))
     } 
@@ -58,33 +56,6 @@ export class App extends Component  {
     }))
   };
 
-  // clickLoadMore = () => {
-  //   this.setState(PrevState => ({
-  //     page: PrevState.page + 1, // збільшуємо номер сторінки на +1 (prevState.page += 1),
-  //   }));
-  // };
-
-  // openModal = (largeImageURL, alt) => {
-  //   this.setState(({ isShowModal }) => {
-  //     return { isShowModal: !isShowModal, largeImageURL, alt };
-  //   });
-  // };
-
-  // closeModal = () => {
-  //   this.setState(({isShowModal}) => {
-  //     return { isShowModal: !isShowModal };
-  //   });
-  // };
-
-  // // keyWordSearch - тут так назвав те що прийшло пропсом з компонента Searchbar = (propSearch)=> {...
-  // handleSearchBarForm = (search) => {
-  //   this.setState({
-  //     search,
-  //     images:[],
-  //     page: 1,
-  //     isLoading: false,
-  //     });
-  // }//      total: 1, error: null, isEmpty: false,
   render() {  
     const { arrImages, page,  isLoading, error } = this.state; //total, isEmpty
     return (

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { GaleryImage, GaleryItem } from './ImageGalleryItem.styled';
+import { GaleryImage, GaleryBigImage, GaleryItem } from './ImageGalleryItem.styled';
 import { Component } from 'react';
 import { Modal } from 'components/Modal/Modal';
 
@@ -23,7 +23,7 @@ export class ImageGalleryItem extends Component {
             </GaleryItem>
             {isModal && (
                <Modal onClose={this.toggleModal}>
-                  <GaleryImage src={largeImageURL} alt={tags} />
+                  <GaleryBigImage src={largeImageURL} alt={tags} />
                </Modal>
             )}
   
