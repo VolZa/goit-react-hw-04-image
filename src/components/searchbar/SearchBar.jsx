@@ -1,6 +1,5 @@
 import { Formik } from 'formik';
 import {AiOutlineSearch} from 'react-icons/ai'
-// import { toast } from 'react-hot-toast';
 import {Button,  Form, SearchIcon, Field} from './SearchBar.styled'
 
 export const SearchBar = ({onSubmit}) => {

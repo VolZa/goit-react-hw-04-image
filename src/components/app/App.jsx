@@ -1,95 +1,91 @@
-// import React from 'react';
-
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { Layout } from 'components/layout/Layout';
 import {SearchBar} from 'components/searchbar/SearchBar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import * as API from 'services/api';
-import { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'react-hot-toast';
 import { Loader } from 'components/loader/Loader';
 import { Button } from 'components/button/Button';
 
-export class App extends Component  {
-  state = {
-    search: '',
-    arrImages: [],
-    page: 1,
-    per_page: 12,
-    totalPages: 0,
-    isLoading: false, // чи відбувається завантаження
-    error: null,
-  }
-  
+const PER_PAGE = 12;
 
-  componentDidUpdate(_, PrevState) {
-    const { search, page, per_page } = this.state;
-    if (PrevState.search!== search || PrevState.page!== page) {
-      this.fetchGalary(search, page, per_page);}
+export const App = () =>  {
+  const [search, setSearch] = useState('');
+  const [arrImages, setArrImages] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [condition, setCondition] = useState('passive');
+
+  useEffect(()=> { 
+    if (!search) return;
+
+    const fetchGalary = async (search, page, PER_PAGE) => {
+      setCondition('active');
+      try {       
+        setIsLoading(true);
+        const dataImages = await API.fetchImages(search, page, PER_PAGE);
+        if (dataImages.totalHits === 0) {
+          setCondition('empty');}
+
+        setArrImages(prev => [...prev,...dataImages.hits]);
+        setTotalPages(dataImages.totalHits);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchGalary(search, page, PER_PAGE);
+  }, [search, page, arrImages.totalHits]);
+
+  //обробка рядка пошуку
+  const searcWord = ({photoSearch}) => {
+    if (photoSearch.trim()) {      
+      setArrImages([]);
+      setSearch( photoSearch);
+      setPage(1);
+      setTotalPages(0);
+      setIsLoading (false);    
+      setError(false);
+      
+    } else { toast.error("Enter a word to search for")}
   };
 
-  
-//=========================================================
-  fetchGalary = async (search, page, per_page) => {  
-    try { 
-      this.setState({ isLoading: true });
-      //галерея завантаження
-      const images = await API.fetchImages(search, page, per_page);
-      this.setState(prevState => ({ arrImages: [...prevState.arrImages, ...images]}))
-      this.setState({ isLoading: false });//індикатор завантаження
-    } 
-    catch (error) { console.log(error); 
-      this.setState({ isLoading: false });//індикатор завантаження
-    } 
-  };
-  //================================================
-
-  searcWord = ({photoSearch}) => {
-    if (photoSearch.trim()) { 
-      this.setState({
-        arrImages: [],
-        search: photoSearch,
-        page: 1,
-        totalPages: 0,
-        isLoading: false, // чи відбувається завантаження
-      })
-    }
+  const loadNextPage = () => {
+    setPage(prevState => prevState + 1);
   };
 
-  loadNextPage = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-      isLoading: false, // чи відбувається завантаження
-    }))
-  };
-
-  render() {  
-    const { arrImages, page,  isLoading, error } = this.state; //total, isEmpty
-    // const buttonVisible = isHits && page < totalPages && ! loading;
-
-    return (
-      <Layout>
-        <SearchBar onSubmit={this.searcWord}>
-          {error && (
-            <h2 style={{ textAlign: 'center' }}>
-              Щось пішло не так: ({error})!
-            </h2>
-          )}
-        </SearchBar>
-        {isLoading ? <Loader /> : <ImageGallery items={arrImages} />} 
-
-        {Math.ceil(arrImages?.length / 12) >= page && !isLoading && (
-          <Button onClick={this.loadNextPage} />
+  return (
+    <Layout>
+      <SearchBar onSubmit={searcWord}>
+        {error && (
+          <h2 style={{ textAlign: 'center' }}>
+            Щось пішло не так: ({error})!
+          </h2>
         )}
+      </SearchBar>
+      {condition==='empty' && (
+       <h2 style={{ textAlign: 'center' }}> There are no images for your request </h2> 
+      )}
 
-        {/* Компонент для спливаючих повідомлень з бібліотеки 'react-hot-toast'*/}
-        <Toaster
-          toastOptions={{
-            duration: 1500,
-          }}
-        />
+      {isLoading ? <Loader /> : <ImageGallery items={arrImages} />}
 
-      </Layout>
-    );
-  };
+     
+      {Math.ceil(arrImages?.length / 12) >= page && totalPages > arrImages?.length &&(
+        <Button onClick={loadNextPage} />
+      )}
+
+      {/* Компонент для спливаючих повідомлень з бібліотеки 'react-hot-toast'*/}
+      <Toaster
+        toastOptions={{
+          duration: 1500,
+        }}
+      />
+    </Layout>
+  );
 }
 
+//{isLoading && <Loader />}
+// {arrImages?.length && (<ImageGallery items={arrImages} />)}

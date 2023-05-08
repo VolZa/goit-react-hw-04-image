@@ -11,12 +11,12 @@ export const fetchImages = async (searchWord, page, per_page) => {
       per_page: per_page,
       image_type: 'photo',
       orientation: 'horizontal',
-      editors_choice: 'true'
+      // editors_choice: 'true'
    };
 
    // return fetch(`${PIX_URL}?${params}`);
   const response = await axios(PIX_URL, { params });
-  return response.data.hits;
+  return response.data;//.hits
 //   return response.json();
 };
 
